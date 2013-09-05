@@ -25,7 +25,7 @@ public class AndroidConnection {
 	private final int PING_COUNTER = 30;
 	private final String PING_STRING = "";
 	
-	private String serverAddress = "192.168.1.100";
+	private String serverAddress = "192.168.1.132";
 	private final int PORT = 7767;
 	private String PREFERENCE_KEY_PREF = "PREFERENCES";
 	private String IP_ADDRESS_PREF = "IP_ADDRESS";	
@@ -64,17 +64,24 @@ public class AndroidConnection {
 				while (true) {
 					try {
 						Thread.sleep(500);
+//						checkSocket();
+//						checkOutput();
+//						checkInput();
+//						doPing();
 						if (socket == null) {
-							//sendToast("Creating a New Socket");
+							sendToast("Creating a New Socket");
+							System.out.println(serverAddress);
 							socket = new Socket(serverAddress, PORT);
 							in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 							out = new PrintWriter(socket.getOutputStream(), true);
 						}
+						
 						if (requests.isEmpty() == false) {
 							sendToast("Outputing Data: " + requests.peek());
 							out.println(requests.poll());
 						}
-						while (null != in && in.ready()) {
+						
+						while (in != null && in.ready()) {
 							char nextChar = (char) in.read();
 							responseBuilder.append(nextChar);
 							if (nextChar == NEW_LINE) {
@@ -86,18 +93,16 @@ public class AndroidConnection {
 								}
 							}
 						}
-	
-						pingCounter--;
-						if (pingCounter == 0) {
+						
+						if (pingCounter-- == 0) {
 							pingCounter = PING_COUNTER;
 							out.println(PING_STRING);
 							if (out.checkError()) {
-								throw new SocketException();
+								throw new SocketException("Ping Failed");
 							}
 						}
 					} catch (SocketException e) {
-						//sendToast("Socket is null");
-						System.out.println("1");
+						sendToast("Socket is null: " + e.toString());
 						socket = null;
 						in = null;
 						out = null;

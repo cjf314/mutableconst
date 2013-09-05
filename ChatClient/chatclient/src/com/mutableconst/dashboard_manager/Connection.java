@@ -52,8 +52,8 @@ public class Connection {
 					serverSocket = new ServerSocket(PORT);
 					while (true) {
 						try {
+							Thread.sleep(250);
 							if (socket == null) {
-								System.out.println("Connection Made!");
 								System.out.println("Listening");
 								socket = serverSocket.accept();
 								in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -64,7 +64,7 @@ public class Connection {
 								System.out.println("Outputing Data: " + requests.peek());
 								out.println(requests.poll());
 							}
-							while (in.ready()) {
+							while (in != null && in.ready()) {
 								System.out.println("In is ready");
 								char nextChar = (char) in.read();
 								responseBuilder.append(nextChar);
@@ -76,20 +76,16 @@ public class Connection {
 										handleResponse(new Protocol(rawResponse));
 									}
 								}
+							}
+							pingCounter--;
+							if (pingCounter == 0) {
+								pingCounter = PING_COUNTER;
+								out.println(PING_STRING);
 								if (out.checkError()) {
 									throw new SocketException();
 								}
-								pingCounter--;
-								if (pingCounter == 0) {
-									pingCounter = PING_COUNTER;
-									out.println(PING_STRING);
-									if (out.checkError()) {
-										throw new SocketException();
-									}
 
-								}
 							}
-							Thread.sleep(250);
 						} catch (SocketException e) {
 							System.out.println("Socket is null");
 							socket.close();
