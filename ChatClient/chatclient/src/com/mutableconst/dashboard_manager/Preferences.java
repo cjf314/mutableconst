@@ -9,7 +9,7 @@ import com.mutableconst.chatclient.gui.ContactWindow;
 
 public class Preferences {
 
-	private static final String CONFIG_FILE = "config.pref";
+	private static final String CONFIG_FILE = "config.ini";
 
 	private static Properties properties = new Properties();
 	

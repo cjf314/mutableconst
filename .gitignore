@@ -4,7 +4,6 @@ ChatServer\chatserver\gen\com\mutableconst\chatserver\gui\BuildConfig.java
 \.metadata
 
 # Package Files #
-*.jar
 *.war
 *.ear
 

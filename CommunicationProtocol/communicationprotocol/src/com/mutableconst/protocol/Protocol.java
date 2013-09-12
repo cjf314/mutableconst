@@ -1,7 +1,5 @@
 package com.mutableconst.protocol;
 
-import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,10 +60,11 @@ public class Protocol
 			}
 		} else {
 			//TODO what the fuck do we do here?
+			//IDK MAN
 		}
 	}
 
-	public String getEncodedJSONString() 
+	public String getEncodedJSONString()
 	{
 		if (jsonEncoder != null) {
 			return jsonEncoder.toString();
@@ -95,5 +94,5 @@ public class Protocol
 	{
 		return jsonParser.getString(MESSAGE).trim();
 	}
-	
+
 }

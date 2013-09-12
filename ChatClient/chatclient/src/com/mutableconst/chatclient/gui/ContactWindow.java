@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -13,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -20,6 +22,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.mutableconst.dashboard_manager.Preferences;
 import com.mutableconst.dashboard_manager.Preferences;
@@ -57,7 +61,7 @@ public class ContactWindow extends JFrame {
 		super("MutableConst");
 		setIconImage(Resources.MCIcon);
 		setSize(225, 750);
-		setMinimumSize(new Dimension(225, 750));
+		setMinimumSize(new Dimension(225, 250));
 		if (Preferences.getPreference(Preferences.BUDDYX) != null && Preferences.getPreference(Preferences.BUDDYY) != null) {
 			setLocation(new Integer(Preferences.getPreference(Preferences.BUDDYX)), new Integer(Preferences.getPreference(Preferences.BUDDYY)));
 		} else {
@@ -72,7 +76,6 @@ public class ContactWindow extends JFrame {
 		filterBox = new JTextField();
 		filterBox.setMinimumSize(new Dimension(getWidth(), 25));
 		filterBox.setMaximumSize(new Dimension(getWidth(), 25));
-		// filterBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 		filterBox.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -90,15 +93,10 @@ public class ContactWindow extends JFrame {
 
 		topArea = Box.createHorizontalBox();
 		topArea.add(filterBox);
-
-		// friendsArea = Box.createVerticalBox();
-		// friendsArea.add(Box.createVerticalStrut(5));
-		friendsLayout = new GridBagLayout();
-		friendsLayoutContrains = new GridBagConstraints();
-		friendsArea = new JPanel();
-		friendsArea.setLayout(friendsLayout);
-		// friendsArea.add(Box.createVerticalStrut(5));
-		// friendsArea.setDoubleBuffered(true);
+		
+		MigLayout layout = new MigLayout("align left", "[grow][][]", "[][shrink]");
+		
+		friendsArea = new JPanel(layout);
 
 		scroll = new JScrollPane(friendsArea);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -116,27 +114,13 @@ public class ContactWindow extends JFrame {
 	}
 
 	private void updateContactWindow() {
-		Dimension rigidAreaDim = new Dimension(0, 5);
 		String filter = filterBox.getText().toLowerCase();
 		friendsArea.removeAll();
 		for (int i = 0; i < contacts.length; i++) {
-			if (i == contacts.length - 1) {
-				friendsLayoutContrains.weighty = 10;
-				friendsLayoutContrains.anchor = GridBagConstraints.FIRST_LINE_START;
-			}
 			if (contacts[i].matchesFilter(filter) || filter.length() == 0) {
-
-				friendsLayoutContrains.gridx = 0;
-				friendsLayoutContrains.gridy = i;
-				// friendsLayoutContrains.gridheight = 2;
-				friendsLayoutContrains.anchor = GridBagConstraints.LINE_START;
-				// friendsLayoutContrains.ipady = 15;
-
-				friendsArea.add(contacts[i], friendsLayoutContrains);
-				// friendsArea.add(Box.createRigidArea(rigidAreaDim));
+				friendsArea.add(contacts[i], "wrap, grow, gap 0 0 0 0, hmin 30");
 			}
 		}
-		// friendsLayoutContrains.weighty =
 		friendsArea.revalidate();
 		friendsArea.repaint();
 	}
@@ -153,9 +137,6 @@ public class ContactWindow extends JFrame {
 		friends[6] = new ContactWindowTile(ContactManager.addContact(new Contact("2629940732", "Casey The Slenderman Slenderman")));
 		friends[7] = new ContactWindowTile(ContactManager.addContact(new Contact("6083976053", "Nick McFace")));
 		friends[8] = new ContactWindowTile(ContactManager.addContact(new Contact("6085553333")));
-		// for(int i = 0; i < friends.length; i++) {
-		// friends[i] = new BuddyListWindowFriend();
-		// }
 		return friends;
 	}
 
