@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import com.mutableconst.dashboard_manager.EventManager;
 import com.mutableconst.models.Contact;
@@ -24,7 +26,7 @@ public class ContactWindowTile extends JPanel {
 		JLabel name = new JLabel(contact.getName());
 		JLabel phoneNumber = new JLabel(contact.getPhoneNumber());
 
-		setBackground(Color.red);
+		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
 		
 		add(name);
 		add(phoneNumber);

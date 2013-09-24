@@ -40,11 +40,11 @@ public class TextWindow extends JFrame {
 		super();
 		this.contact = contact;
 		setIconImage(Resources.MCIcon);
-		if(contact.getName() != null && contact.getName().length() > 0) {
-			setTitle(contact.getName()); 
+		if (contact.getName() != null && contact.getName().length() > 0) {
+			setTitle(contact.getName());
 		} else {
 			setTitle(contact.getPhoneNumber());
-		} 
+		}
 		setSize(555, 390);
 		setMinimumSize(new Dimension(555, 390));
 		setLocationRelativeTo(null);
@@ -104,14 +104,14 @@ public class TextWindow extends JFrame {
 		verticalBox.add(horizontalBox);
 
 		add(verticalBox);
-		
+
 		setVisible(true);
 	}
 
 	private void startSendMessage() {
 		String message = sendMessageText.getText().trim();
 		if (message.length() > 0) {
-			if (EventManager.sendTextMessage(contact.getPhoneNumber() , message)) {
+			if (EventManager.sendTextMessage(contact.getPhoneNumber(), message)) {
 				conversationText.append(SENDER_PREFIX + message + NEW_LINE);
 				sendMessageText.setText(null);
 				scrollBar.setValue(scrollBar.getMaximum());

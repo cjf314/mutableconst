@@ -3,12 +3,11 @@ package com.mutableconst.dashboard_manager;
 import com.mutableconst.chatclient.gui.ContactWindow;
 import com.mutableconst.chatclient.gui.SystemTrayInterface;
 import com.mutableconst.chatclient.gui.TextWindow;
-import com.mutableconst.models.Contact;
 import com.mutableconst.models.ContactManager;
 import com.mutableconst.protocol.Protocol;
+import com.mutableconst.protocol.Connection;
 
 import java.util.HashMap;
-
 import javax.swing.JFrame;
 
 public class EventManager {
@@ -23,7 +22,7 @@ public class EventManager {
 		Preferences.loadPreferences();
 		ContactWindow.focusContactWindow();
 		SystemTrayInterface.startSystemTray();
-		Connection.startConnection();
+		Connection.startConnection(false);
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				Preferences.savePreferences();
@@ -57,13 +56,23 @@ public class EventManager {
 		ContactWindow.focusContactWindow();
 	}
 
+	public static void handleResponse(Protocol response) {
+		System.out.println("In Desktop Manager");
+		if (response.getHeader().equals(Protocol.TEXT_MESSAGE_HEADER)) {
+			System.out.println("Handling Recieve Text Message");
+			recieveTextMessage(response.getPhoneNumber(), response.getMessage());
+		} else {
+			System.out.println("Cant handle this yet O_o");
+		}
+	}
+
 	public static boolean sendTextMessage(String phoneNumber, String message) {
 		String jsonString = new Protocol(Protocol.TEXT_MESSAGE_HEADER, Protocol.PHONE, phoneNumber, Protocol.MESSAGE, message).getEncodedJSONString();
 		System.out.println("Sending Text: " + jsonString);
 		return Connection.addRequest(jsonString);
 	}
 
-	public static boolean recieveTextMessage(String phoneNumber, String message) {
+	private static boolean recieveTextMessage(String phoneNumber, String message) {
 		System.out.println("Recieving Text Message: " + " " + phoneNumber + " " + message);
 		pingTextWindow(phoneNumber, message);
 		return true;

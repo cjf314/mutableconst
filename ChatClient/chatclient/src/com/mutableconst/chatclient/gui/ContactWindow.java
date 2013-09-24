@@ -1,20 +1,12 @@
 package com.mutableconst.chatclient.gui;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -26,11 +18,10 @@ import javax.swing.event.DocumentListener;
 import net.miginfocom.swing.MigLayout;
 
 import com.mutableconst.dashboard_manager.Preferences;
-import com.mutableconst.dashboard_manager.Preferences;
 import com.mutableconst.models.Contact;
 import com.mutableconst.models.ContactManager;
 
-public class ContactWindow extends JFrame {
+public  class ContactWindow extends JFrame {
 
 	private static ContactWindow reference;
 
@@ -40,7 +31,7 @@ public class ContactWindow extends JFrame {
 	JPanel friendsArea;
 	GridBagLayout friendsLayout;
 	GridBagConstraints friendsLayoutContrains;
-
+	
 	private Box topArea, windowBox;
 
 	ContactWindowTile[] contacts;
@@ -74,8 +65,8 @@ public class ContactWindow extends JFrame {
 			// Ignore
 		}
 		filterBox = new JTextField();
-		filterBox.setMinimumSize(new Dimension(getWidth(), 25));
-		filterBox.setMaximumSize(new Dimension(getWidth(), 25));
+		//filterBox.setMinimumSize(new Dimension(getWidth(), 25));
+		//filterBox.setMaximumSize(new Dimension(getWidth(), 25));
 		filterBox.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -91,21 +82,18 @@ public class ContactWindow extends JFrame {
 			public void changedUpdate(DocumentEvent e) {}
 		});
 
-		topArea = Box.createHorizontalBox();
-		topArea.add(filterBox);
+		MigLayout windowLayout = new MigLayout("align left, novisualpadding", "[grow][][]", "[][shrink]");
+		MigLayout friendsLayout = new MigLayout("align left, novisualpadding", "[grow][][]", "[][shrink]");
 		
-		MigLayout layout = new MigLayout("align left", "[grow][][]", "[][shrink]");
+		friendsArea = new JPanel(friendsLayout);
 		
-		friendsArea = new JPanel(layout);
+		setLayout(windowLayout);
 
 		scroll = new JScrollPane(friendsArea);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
-		windowBox = Box.createVerticalBox();
-		windowBox.add(scroll, 0);
-		windowBox.add(topArea, 0);
-
-		add(windowBox);
+		
+		add(filterBox, "wrap, grow, gap 0 0 0 0, hmin 20" );
+		add(friendsArea, "wrap, grow, gap 0 0 0 0, hmin 30");
 
 		setVisible(true);
 
@@ -118,7 +106,7 @@ public class ContactWindow extends JFrame {
 		friendsArea.removeAll();
 		for (int i = 0; i < contacts.length; i++) {
 			if (contacts[i].matchesFilter(filter) || filter.length() == 0) {
-				friendsArea.add(contacts[i], "wrap, grow, gap 0 0 0 0, hmin 30");
+				friendsArea.add(contacts[i], " dock west, dock north, grow, gap 0 0 0 0, hmin 30");
 			}
 		}
 		friendsArea.revalidate();
@@ -127,7 +115,6 @@ public class ContactWindow extends JFrame {
 
 	private ContactWindowTile[] getContacts() {
 		ContactWindowTile[] friends = new ContactWindowTile[9];
-
 		friends[0] = new ContactWindowTile(ContactManager.addContact(new Contact("2629940732", "Casey The Slenderman Slenderman")));
 		friends[1] = new ContactWindowTile(ContactManager.addContact(new Contact("6083976053", "Nick McFace")));
 		friends[2] = new ContactWindowTile(ContactManager.addContact(new Contact("6085553333")));

@@ -14,7 +14,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.mutableconst.android.dashboard_manager.AndroidConnection;
 import com.mutableconst.android.dashboard_manager.AndroidEventManager;
 import com.mutableconst.protocol.ConnectionType;
 
@@ -101,6 +100,8 @@ public class MainActivity extends Activity {
 				editor.commit();
 				
 				ipAddress = newIpAddress; 
+				
+				//ExtendAndroidConnection.restartConnection();
 			}
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}

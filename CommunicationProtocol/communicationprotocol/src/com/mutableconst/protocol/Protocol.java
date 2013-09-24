@@ -41,7 +41,11 @@ public class Protocol
 	 */
 	public Protocol(String jsonString)
 	{
-		jsonParser = new JSONObject(jsonString);
+		try {
+			jsonParser = new JSONObject(jsonString);
+		} catch (JSONException e) {
+			
+		}
 		//TODO check for bad strings, needs to throw some Exception
 	}
 
