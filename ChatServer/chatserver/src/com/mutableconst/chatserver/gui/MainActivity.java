@@ -1,8 +1,10 @@
 package com.mutableconst.chatserver.gui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.provider.ContactsContract;
 
 import com.mutableconst.android.dashboard_manager.AndroidEventManager;
 import com.mutableconst.protocol.ConnectionType;
@@ -47,6 +50,12 @@ public class MainActivity extends Activity {
 
 		AndroidEventManager.setupEnvironment(this);
 		
+		// TODO: Get contacts info
+		//Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+		//Intent intent = new Intent(Intent.ACTION_PICK);
+		//intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+		//startActivityForResult(intent, PICK_CONTACT);
+
 		// TODO: Runtime shutdown handler thread
 		// TODO: Communication protocol
 		
@@ -60,8 +69,7 @@ public class MainActivity extends Activity {
 		 */
 		RadioGroup connectionSelection = (RadioGroup) findViewById(R.id.connectionSelection);
 		int selectedRadioButtonId = sharedPreferences.getInt(referenceId, -1);
-		if(selectedRadioButtonId != -1)
-		{
+		if(selectedRadioButtonId != -1) {
 			RadioButton checkedButton = (RadioButton) findViewById(selectedRadioButtonId);
 			checkedButton.setChecked(true);
 		}
@@ -111,14 +119,6 @@ public class MainActivity extends Activity {
 			
 		});
 
-		// Quit button
-		Button quitButton = (Button) findViewById(R.id.quitButton);
-		quitButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				System.exit(0);
-			}
-		});
 	}
 
 	@Override

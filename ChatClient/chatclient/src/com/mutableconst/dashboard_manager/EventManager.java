@@ -37,6 +37,7 @@ public class EventManager {
 			window = new TextWindow(ContactManager.getContact(phoneNumber));
 			windows.put(phoneNumber, window);
 		} else {
+			// TODO: Bring to front based on preferences
 			window.toFront();
 			window.setExtendedState(JFrame.NORMAL);
 			window.repaint();

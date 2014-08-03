@@ -114,6 +114,7 @@ public  class ContactWindow extends JFrame {
 	}
 
 	private ContactWindowTile[] getContacts() {
+		
 		ContactWindowTile[] friends = new ContactWindowTile[9];
 		friends[0] = new ContactWindowTile(ContactManager.addContact(new Contact("2629940732", "Casey The Slenderman Slenderman")));
 		friends[1] = new ContactWindowTile(ContactManager.addContact(new Contact("6083976053", "Nick McFace")));

@@ -28,7 +28,8 @@ public class Connection {
 	private static BufferedReader in;
 	private static PrintWriter out;
 
-	private static String serverAddress = "192.168.1.131";
+	// Desktop application address
+	private static String serverAddress = "192.168.1.50";
 
 	private final static StringBuilder responseBuilder = new StringBuilder();
 	private final static ConcurrentLinkedQueue<String> requests = new ConcurrentLinkedQueue<String>();
